@@ -1,0 +1,19 @@
+apiVersion: apps/v1 # Changed from extensions/v1beta1 to apps/v1
+kind: Deployment
+metadata:
+  name: experiment-deployment
+spec:
+  selector: # Added selector
+    matchLabels:
+      app: experiment-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: experiment-deployment
+    spec:
+      containers:
+      - name: experiment-depoyment
+        image:  mcr.microsoft.com/azuredocs/aci-helloworld
+        ports:
+        - containerPort: 80
