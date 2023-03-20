@@ -11,13 +11,18 @@ def welcome():
 def publish():
     if (request.data):
         iotdata = request.get_json() # IOT Device will send this data randomly
+
+        # Get weather and ocean data based on location of IOT device, store in dictionary objects
         weatherresponse = requests.get(f'https://api.open-meteo.com/v1/forecast?latitude={iotdata["lat"]}&longitude={iotdata["lon"]}&current_weather=true')
         oceanresponse = requests.get(f'https://marine-api.open-meteo.com/v1/marine?latitude={iotdata["lat"]}&longitude={iotdata["lon"]}&timezone=auto&daily=wave_height_max,wave_direction_dominant')
         weatherdict = weatherresponse.json()
         oceandict = oceanresponse.json()
+
+        # Open Log File, Write to Log File, Close Log File
         f = open("logs.txt", "a")
         f.write('[' + str(request.json) + ", " + str(weatherdict.get('current_weather')) + ", " + f'{{"waveheight": {oceandict["daily"]["wave_height_max"][0]}, ' + f'"wavedirection": {oceandict["daily"]["wave_direction_dominant"][0]}' + "}"+ ']' + "\n")
         f.close()
+        
         return "Successful Request"
     else:
         return 'Empty Request'
