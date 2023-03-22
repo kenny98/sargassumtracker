@@ -15,11 +15,11 @@ minikube image build -t python-docker -f ./dockerfile .
 <!-- Run Container Pod in Kubernetes -->
 ### Run Container Pod in Kubernetes
 ```
-kubectl run python-docker --image=python-docker --image-pull-policy=Never --restart=Never --expose=true
+kubectl run python-docker --image=python-docker --image-pull-policy=Never --restart=Never --expose=true --port=5000 
 ```
 
-<!-- Expose the Pod to be accessed from outside of Pod -->
-### Expose the Pod to be accessed from outside of Pod
+<!-- Expose the Pod to be accessed from outside of Pod DO NOT RUN -->
+### Expose the Pod to be accessed from outside of Pod - DONT RUN
 ```
 kubectl expose pod python-docker --port=5000 --name=python-docker
 ```

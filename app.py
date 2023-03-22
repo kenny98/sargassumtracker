@@ -1,5 +1,10 @@
 from flask import Flask, request
 import requests
+import sys
+
+def print_to_stderr(*a):
+	print(*a, file=sys.stderr)
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -20,9 +25,11 @@ def publish():
 
         # Open Log File, Write to Log File, Close Log File
         f = open("logs.txt", "a")
-        f.write('[' + str(request.json) + ", " + str(weatherdict.get('current_weather')) + ", " + f'{{"waveheight": {oceandict["daily"]["wave_height_max"][0]}, ' + f'"wavedirection": {oceandict["daily"]["wave_direction_dominant"][0]}' + "}"+ ']' + "\n")
+        new_log = '[' + str(request.json) + ", " + str(weatherdict.get('current_weather')) + ", " + f'{{"waveheight": {oceandict["daily"]["wave_height_max"][0]}, ' + f'"wavedirection": {oceandict["daily"]["wave_direction_dominant"][0]}' + "}"+ ']' + "\n"
+        f.write(new_log)
+        print_to_stderr(new_log)
         f.close()
-        
+
         return "Successful Request"
     else:
         return 'Empty Request'
